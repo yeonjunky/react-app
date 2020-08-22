@@ -1,4 +1,4 @@
-끝import React, {Component} from 'react'
+import React, {Component} from 'react'
 import TodoItem from './TodoItem'
 
 class TodoItemList extends Component {
