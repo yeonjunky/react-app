@@ -1,0 +1,37 @@
+.addTodo {
+  display: flex;
+  padding: 1rem;
+}
+
+input {
+  flex: 1;
+  font-size: 1.25rem;
+
+  outline: none;
+  border: none;
+
+  margin-left: 1rem;
+  margin-right: 1rem;
+
+  border-bottom: 1px solid #c5f6fa;
+}
+
+.button {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+
+  background: #29d5f0;
+  color: white;
+
+  border-radius: 3px;
+
+  cursor: pointer;
+
+  border: none;
+}
+
+.button:hover {
+  background: #3bc0db;
+}
