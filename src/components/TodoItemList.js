@@ -1,27 +1,14 @@
-import React, {Component} from 'react'
-import TodoItem from './TodoItem'
+import React from "react";
+import TodoItem from "./TodoItem";
 
-class TodoItemList extends Component {
-    render() {
-        const {todos, onToggle, onRemove } = this.props;
-        const todoList = todos.map(({id, text, checked}) => (
-            <TodoItem
-            id={id}
-            text={text}
-            checked={checked}
-            onToggle={onToggle}
-            onRemove={onRemove}
-            key={id}
-            />
-        )
-    ); 
-
-        return (
-            <div>
-                {todoList}
-            </div>
-        )
-    }
-}
+const TodoItemList = ({ todos }) => {
+  return (
+    <div>
+      {todos.map(({ id, text, checked }) => (
+        <TodoItem key={id} id={id} text={text} isChecked={checked}></TodoItem>
+      ))}
+    </div>
+  );
+};
 
 export default TodoItemList;
