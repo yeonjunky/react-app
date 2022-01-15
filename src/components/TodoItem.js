@@ -1,15 +1,23 @@
-import React from "react";
-import "./TodoItem.css";
+import React, { useState } from "react";
+import styles from "./TodoItem.module.css";
 
-const TodoItem = ({ text, isChecked }) => {
+const TodoItem = ({ id, text, isDone }) => {
+
+  const [done, onDone] = useState(isDone);
+
+  const onClick = () => {
+    onDone((previous) => !previous)
+  }
 
   return (
-    <div className="todo-item">
-      <div className="remove">&times;</div>
-      <div className={`todo-text ${isChecked && "checked"}`}>
+    <div className={styles.todo_item} onClick={onClick}>
+      <div className={styles.remove}>&times;</div>
+      <div
+        className={`${styles.todo_text} ${done ? styles.text_line : ""}`}
+      >
         <div>{text}</div>
       </div>
-      {isChecked && <div className="check-mark">✓</div>}
+      {done ? <div className={styles.check_mark}>✓</div> : null}
     </div>
   );
 };
