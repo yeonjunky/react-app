@@ -1,4 +1,4 @@
-.todo-item {
+.todo_item {
   padding: 1rem;
   display: flex;
   align-items: center;
@@ -7,16 +7,16 @@
   user-select: none;
 }
 
-.todo-item:hover {
+.todo_item:hover {
   background: #e3fafc;
 }
 
-.todo-item:hover .remove {
+.todo_item:hover .remove {
   opacity: 1;
 }
 
 /* todo-item 사이에 border */
-.todo-item + .todo-item {
+.todo_item + .todo_item {
   border-top: 1px solid #f1f3f5;
 }
 
@@ -27,20 +27,22 @@
   opacity: 0;
 }
 
-.todo-text {
+.todo_text {
+  allowMultiple: true;
   flex: 1;
-  word-break: break-all;
 }
 
-.checked {
+.text_line {
+  allowMultiple: true;
   text-decoration: line-through;
   color: #adb5bd;
 }
 
-.check-mark {
+.check_mark {
   font-size: 1.5rem;
   line-height: 1rem;
   margin-left: 1rem;
   color: #3bc9db;
   font-weight: 800;
+  flex: -1;
 }
