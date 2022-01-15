@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./AddTodo.css";
 
-const Todoform = () => {
+const AddTodo = () => {
   const [value, setValue] = useState("");
 
   const onChange = (event) => {
@@ -16,4 +16,4 @@ const Todoform = () => {
   );
 };
 
-export default Todoform;
+export default AddTodo;
