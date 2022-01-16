@@ -1,6 +1,9 @@
-from flask import Flask, jsonify, request, abort
+from flask import Flask, jsonify, request, abort, make_response
+from util import get_new_id
 
 app = Flask(__name__)
+
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 todos = [
     {"id": 0, "text": "hello!", "checked": False},
@@ -14,6 +17,14 @@ def not_found(e):
     return "{}".format(e.description)
 
 
+@app.after_request
+def after_request(response):
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,PATCH,DELETE,OPTIONS')
+    return response
+
+
 @app.route('/')
 def hello():
     return "Hello world!"
@@ -22,24 +33,29 @@ def hello():
 @app.route('/todos', methods=['GET'])
 def get_todos():
     response = jsonify(todos)
-    response.headers.add("Access-Control-Allow-Origin", "http://localhost:3000")
     return response
 
 
 @app.route('/todos', methods=['POST'])
-def add_todo(todo_id):
-    pass
+def add_todo():
+    text = request.get_json()
+    new_id = get_new_id(todos)
+    todos.append({"id": new_id, "text": text, "checked": False})
+    response = jsonify(todos)
+    return response
 
 
 @app.route('/todos/<int:todo_id>', methods=['PUT'])
 def modify_todo(todo_id):
     content = request.get_json()
+    print(content)
 
     for i, todo in enumerate(todos):
         if todo["id"] == todo_id:
             todos[i] = content
             print(todos)
-            return content
+            response = make_response(jsonify(content), 200)
+            return response
 
     return abort(404, description="todo id {} does not exist".format(todo_id))
 
