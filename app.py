@@ -3,7 +3,6 @@ from util import get_new_id
 
 app = Flask(__name__)
 
-app.config['CORS_HEADERS'] = 'Content-Type'
 
 todos = [
     {"id": 0, "text": "hello!", "checked": False},
@@ -62,7 +61,12 @@ def modify_todo(todo_id):
 
 @app.route('/todos/<int:todo_id>', methods=['DELETE'])
 def delete_todo(todo_id):
-    pass
+    for i, todo in enumerate(todos):
+        if todo["id"] == todo_id:
+            todos.pop(i)
+            print(todos)
+            return "deleted todo {}".format(todo_id)
+    return abort(404, description="todo id {} does not exist".format(todo_id))
 
 
 if __name__ == '__main__':
