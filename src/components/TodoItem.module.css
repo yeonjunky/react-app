@@ -15,6 +15,10 @@
   opacity: 1;
 }
 
+.deleted {
+  display: none;
+}
+
 /* todo-item 사이에 border */
 .todo_item + .todo_item {
   border-top: 1px solid #f1f3f5;

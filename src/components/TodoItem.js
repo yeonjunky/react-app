@@ -3,6 +3,7 @@ import styles from "./TodoItem.module.css";
 
 const TodoItem = ({ id, text, isDone }) => {
   const [done, setDone] = useState(isDone);
+  const [isDelete, setDelete] = useState(false);
 
   const doneStateRequest = async () => {
     const requestOptions = {
@@ -13,8 +14,25 @@ const TodoItem = ({ id, text, isDone }) => {
       body: JSON.stringify({ id: id, text: text, checked: !done }),
     };
 
-    await fetch(`http://localhost:5000/todos/${id}`, requestOptions).then(() =>
-      console.log("sending request successfully")
+    await fetch(`http://localhost:5000/todos/${id}`, requestOptions).then(
+      () => {
+        console.log("sending put request successfully");
+      }
+    );
+  };
+
+  const deleteStateRequest = async () => {
+    const requestOptions = {
+      method: "DELETE",
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+
+    await fetch(`http://localhost:5000/todos/${id}`, requestOptions).then(
+      () => {
+        console.log("sending delete request succesfully");
+      }
     );
   };
 
@@ -23,14 +41,20 @@ const TodoItem = ({ id, text, isDone }) => {
     setDone((previous) => !previous);
   };
 
-  const todoDelete = () => {};
+  const deleteTodo = (event) => {
+    deleteStateRequest();
+    setDelete(true);
+  };
 
   return (
-    <div className={styles.todo_item} onClick={onClick}>
-      <div className={styles.remove} onClick={todoDelete}>
+    <div className={`${styles.todo_item} ${isDelete ? styles.deleted : ""}`}>
+      <div className={styles.remove} onClick={deleteTodo}>
         &times;
       </div>
-      <div className={`${styles.todo_text} ${done ? styles.text_line : ""}`}>
+      <div
+        className={`${styles.todo_text} ${done ? styles.text_line : ""}`}
+        onClick={onClick}
+      >
         <div>{text}</div>
       </div>
       {done ? <div className={styles.check_mark}>✓</div> : null}
