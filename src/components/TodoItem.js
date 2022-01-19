@@ -41,7 +41,7 @@ const TodoItem = ({ id, text, isDone }) => {
     setDone((previous) => !previous);
   };
 
-  const deleteTodo = (event) => {
+  const deleteTodo = () => {
     deleteStateRequest();
     setDelete(true);
   };
