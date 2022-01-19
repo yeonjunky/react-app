@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import "./AddTodo.css";
 
-const AddTodo = () => {
+const AddTodo = ({ updateTodos }) => {
   const [value, setValue] = useState("");
+
   const requestOptions = {
     method: "POST",
-    headers: { "Content-type": "application/json" },
-    mode: "no-cors",
-    body: JSON.stringify({})
+    headers: {
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify({ text: value }),
   };
 
   const onChange = (event) => {
@@ -15,7 +17,16 @@ const AddTodo = () => {
   };
 
   const onSubmit = async (event) => {
-    await fetch("http://localhost:5000/todos");
+    if (value !== "") {
+      event.preventDefault();
+
+      await fetch("http://localhost:5000/todos", requestOptions)
+        .then((response) => response.json())
+        .then((json) => updateTodos(json))
+        .then(setValue(""));
+    } else {
+      alert("fill the text before click add");
+    }
   };
 
   return (
