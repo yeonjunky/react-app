@@ -17,7 +17,7 @@ def not_found(e):
 
 
 @app.after_request
-def after_request(response):
+def cors(response):
     response.headers.add('Access-Control-Allow-Origin', '*')
     response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
     response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,PATCH,DELETE,OPTIONS')
@@ -37,7 +37,8 @@ def get_todos():
 
 @app.route('/todos', methods=['POST'])
 def add_todo():
-    text = request.get_json()
+    text = request.get_json()['text']
+    print(text)
     new_id = get_new_id(todos)
     todos.append({"id": new_id, "text": text, "checked": False})
     response = jsonify(todos)
