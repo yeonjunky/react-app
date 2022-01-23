@@ -1,14 +1,12 @@
 from flask import Flask, jsonify, request, abort, make_response
-from util import get_new_id
+import database
 
 app = Flask(__name__)
 
+FILE_PATH = "database.db"
+IS_UPDATE = False
 
-todos = [
-    {"id": 0, "text": "hello!", "checked": False},
-    {"id": 1, "text": "I'm jun!", "checked": True},
-    {"id": 2, "text": "haha!", "checked": False}
-]
+todos = database.get_data(FILE_PATH)
 
 
 @app.errorhandler(404)
@@ -31,29 +29,36 @@ def hello():
 
 @app.route('/todos', methods=['GET'])
 def get_todos():
+    if IS_UPDATE:
+        global todos
+        todos = database.get_data(FILE_PATH)
     response = jsonify(todos)
     return response
 
 
 @app.route('/todos', methods=['POST'])
 def add_todo():
+    global todos
+
     text = request.get_json()['text']
-    print(text)
-    new_id = get_new_id(todos)
-    todos.append({"id": new_id, "text": text, "checked": False})
+
+    database.insert_data(FILE_PATH, (text, False))
+    todos = database.get_data(FILE_PATH)
+
     response = jsonify(todos)
     return response
 
 
 @app.route('/todos/<int:todo_id>', methods=['PUT'])
 def modify_todo(todo_id):
+    global todos
     content = request.get_json()
     print(content)
 
     for i, todo in enumerate(todos):
         if todo["id"] == todo_id:
-            todos[i] = content
-            print(todos)
+            database.update_data(FILE_PATH, content)
+            todos = database.get_data(FILE_PATH)
             response = make_response(jsonify(content), 200)
             return response
 
@@ -62,12 +67,11 @@ def modify_todo(todo_id):
 
 @app.route('/todos/<int:todo_id>', methods=['DELETE'])
 def delete_todo(todo_id):
-    for i, todo in enumerate(todos):
-        if todo["id"] == todo_id:
-            todos.pop(i)
-            print(todos)
-            return "deleted todo {}".format(todo_id)
-    return abort(404, description="todo id {} does not exist".format(todo_id))
+    global todos
+    database.delete_data(FILE_PATH, todo_id)
+    todos = database.get_data(FILE_PATH)
+    return jsonify(todos)
+    # return abort(404, description="todo id {} does not exist".format(todo_id))
 
 
 if __name__ == '__main__':
